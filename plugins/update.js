@@ -10,12 +10,11 @@ CONTACT ME HERE +237656520674
 YT: KermHackTools
 Github: Kgtech-cmr
 */
-
+/*
 const config = require('../config');
 let fs = require('fs');
 const { execSync } = require('child_process');
 const { cmd } = require('../command');
-
 
 cmd({ 
   pattern: "update", 
@@ -56,20 +55,34 @@ cmd({
     
     console.log(`Using ${defaultBranch} as the default branch.`); 
     
-    const localCommit = execSync('git rev-parse HEAD').toString().trim(); 
-    const originCommit = execSync(`git rev-parse origin/${defaultBranch}`).toString().trim();
-    
-    if (localCommit === originCommit) { 
-      await conn.sendMessage(from, { text: '*✅ Kerm md v1 is already up to date!*' }, { quoted: mek });
-    } else { 
-      console.log("Resetting to origin state..."); 
-      execSync(`git reset --hard origin/${defaultBranch}`); 
-      console.log("Pulling updates..."); 
-      execSync(`git pull origin ${defaultBranch}`); 
+    const hasCommits = execSync('git rev-list --count HEAD').toString().trim();
+    if (hasCommits === '0') {
+      console.log("No commits in local repository. Pulling updates...");
+      execSync(`git pull origin ${defaultBranch}`);
       await conn.sendMessage(from, { text: '*✅ Kerm md v1 updated successfully!*' }, { quoted: mek });
+    } else {
+      const localCommit = execSync('git rev-parse HEAD').toString().trim(); 
+      const originCommit = execSync(`git rev-parse origin/${defaultBranch}`).toString().trim();
+      
+      if (localCommit === originCommit) { 
+        await conn.sendMessage(from, { text: '*✅ Kerm md v1 is already up to date!*' }, { quoted: mek });
+      } else { 
+        console.log("Resetting to origin state..."); 
+        execSync(`git reset --hard origin/${defaultBranch}`); 
+        console.log("Pulling updates..."); 
+        execSync(`git pull origin ${defaultBranch}`); 
+        await conn.sendMessage(from, { text: '*✅ Kerm md v1 updated successfully!*' }, { quoted: mek });
+      }
     }
   } catch (error) { 
     console.error(error); 
     reply(`*Error during update:* ${error.message}`); 
   }
 });
+    }
+  } catch (error) { 
+    console.error(error); 
+    reply(`*Error during update:* ${error.message}`); 
+  }
+});
+*/
